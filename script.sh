@@ -26,6 +26,6 @@ for pkg in $sailfishpkgs; do pkcon remove $pkg; done
 
 pkcon refresh
 
-pkcon install feature-jolla sailfish-content-configuration-jolla sailfish-content-graphics-jolla-z1.25 sailfish-content-apps-default-configs splash-img-l500d-jolla
+pkcon install feature-jolla sailfish-content-configuration-jolla sailfish-content-graphics-jolla-z1.25 sailfish-content-apps-default-configs
 
 touch /usr/share/ssu/board-mappings.d/10-l500d-jolla.ini
