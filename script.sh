@@ -61,6 +61,8 @@ zypper rm feature-intex sailfish-content-configuration-intex sailfish-content-ap
 echo "Restarting ambience service"
 systemctl-user restart ambienced
 
+pkcon refresh
+
 echo "Telling system we're Jolla C now"
 touch /usr/share/ssu/board-mappings.d/10-l500d-jolla.ini
 
