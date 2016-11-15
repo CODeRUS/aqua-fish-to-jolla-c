@@ -20,6 +20,7 @@ fi
 ssu dr customer-intex
 pkcon -y install zypper
 killall packagekitd
+zypper ref
 
 echo "----- IMPORTANT -----"
 echo "- type 1 and ENTER --"
