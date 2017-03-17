@@ -1,6 +1,7 @@
 #!/bin/bash
 
 if [ ! -f /usr/share/ssu/features.d/customer-jolla.ini ]; then
+echo "Injecting jolla repository"
 cat >/usr/share/ssu/features.d/customer-jolla.ini <<EOL
 [customer-jolla]
 repos = customer-jolla
@@ -17,10 +18,24 @@ EOL
 ssu ur
 fi
 
+echo "Disabling intex repository"
 ssu dr customer-intex
-pkcon -y install zypper
+
+if which zypper > /dev/null 2>&1
+then
+  echo "Found installed zypper"
+else
+  echo "Installing zypper"
+  pkcon -y install zypper
+fi
+
+echo "Stopping pkackagekit"
 killall packagekitd
+
+echo "Refreshing repositories"
 zypper ref
+
+echo "Installing jolla packages"
 
 echo "----- IMPORTANT -----"
 echo " if you asked to choose 1/2/3 or similar:"
@@ -30,6 +45,8 @@ echo " type y and ENTER"
 echo "----- IMPORTANT -----"
 echo ""
 zypper in feature-jolla sailfish-content-configuration-jolla sailfish-content-graphics-jolla-z1.25 sailfish-content-apps-default-configs sailfish-content-ambiences-default
+
+echo "Removing intex packages"
 
 echo "----- IMPORTANT -----"
 echo " if you asked to choose 1/2/3 or similar:"
@@ -41,6 +58,10 @@ echo ""
 rm /etc/zypp/systemCheck.d/feature-intex.check || true
 zypper rm feature-intex sailfish-content-configuration-intex sailfish-content-apps-intex-configs sailfish-content-ambiences-intex sailfish-content-partnerspaces-intex sailfish-content-browser-intex sailfish-content-profiled-settings-intex all-translations-intex-pack sms-activation-intex sailfish-content-graphics-intex sailfish-content-partnerspaces-intex-tutorial sms-activation-intex-conf sailfish-content-ambiences-intex-default-ambience sailfish-content-tones-intex sailfish-content-gallery-configuration-intex sailfish-content-partnerspaces-intex-gaana sailfish-content-graphics-intex-z1.25 splash-img-l500d-intex
 
+echo "Restarting ambience service"
 systemctl-user restart ambienced
 
+echo "Telling system we're Jolla C now"
 touch /usr/share/ssu/board-mappings.d/10-l500d-jolla.ini
+
+echo "Done!"
