@@ -26,7 +26,7 @@ then
   echo "Found installed zypper"
 else
   echo "Installing zypper"
-  pkcon -y install zypper
+  pkcon -y install zypper || exit 1
 fi
 
 echo "Stopping pkackagekit"
@@ -44,7 +44,7 @@ echo " if you asked to choose y/n/c or similar:"
 echo " type y and ENTER"
 echo "----- IMPORTANT -----"
 echo ""
-zypper in feature-jolla sailfish-content-configuration-jolla sailfish-content-graphics-jolla-z1.25 sailfish-content-apps-default-configs sailfish-content-ambiences-default
+zypper in feature-jolla sailfish-content-configuration-jolla sailfish-content-graphics-jolla-z1.25 sailfish-content-apps-default-configs sailfish-content-ambiences-default || exit 2
 
 echo "Removing intex packages"
 
