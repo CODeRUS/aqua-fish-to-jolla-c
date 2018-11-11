@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Make sure we have up to date repos, otherwise some dependencies might not be found
+echo "Refreshing package lists to make sure zypper is installable"
+pkcon refresh
+
 if [ ! -f /usr/share/ssu/features.d/customer-jolla.ini ]; then
 echo "Injecting jolla repository"
 cat >/usr/share/ssu/features.d/customer-jolla.ini <<EOL
