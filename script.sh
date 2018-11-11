@@ -61,6 +61,7 @@ zypper rm feature-intex sailfish-content-configuration-intex sailfish-content-ap
 echo "Restarting ambience service"
 systemctl-user restart ambienced
 
+echo "Refreshing package lists"
 pkcon refresh
 
 echo "Telling system we're Jolla C now"
