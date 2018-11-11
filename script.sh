@@ -69,6 +69,7 @@ echo "Refreshing package lists"
 pkcon refresh
 
 echo "Telling system we're Jolla C now"
+# This is indeed necessary even if the file already exists
 touch /usr/share/ssu/board-mappings.d/10-l500d-jolla.ini
 
 echo "Done!"
