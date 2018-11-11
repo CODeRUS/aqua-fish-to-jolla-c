@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Make sure we have up to date repos, otherwise some dependencies might not be found
+echo "Refreshing package lists to make sure zypper is installable"
+pkcon refresh
+
 if [ ! -f /usr/share/ssu/features.d/customer-jolla.ini ]; then
 echo "Injecting jolla repository"
 cat >/usr/share/ssu/features.d/customer-jolla.ini <<EOL
@@ -26,7 +30,7 @@ then
   echo "Found installed zypper"
 else
   echo "Installing zypper"
-  pkcon -y install zypper
+  pkcon -y install zypper || exit 1
 fi
 
 echo "Stopping pkackagekit"
@@ -44,7 +48,7 @@ echo " if you asked to choose y/n/c or similar:"
 echo " type y and ENTER"
 echo "----- IMPORTANT -----"
 echo ""
-zypper in feature-jolla sailfish-content-configuration-jolla sailfish-content-graphics-jolla-z1.25 sailfish-content-apps-default-configs sailfish-content-ambiences-default
+zypper in feature-jolla sailfish-content-configuration-jolla sailfish-content-graphics-jolla-z1.25 sailfish-content-apps-default-configs sailfish-content-ambiences-default || exit 2
 
 echo "Removing intex packages"
 
@@ -61,7 +65,11 @@ zypper rm feature-intex sailfish-content-configuration-intex sailfish-content-ap
 echo "Restarting ambience service"
 systemctl-user restart ambienced
 
+echo "Refreshing package lists"
+pkcon refresh
+
 echo "Telling system we're Jolla C now"
+# This is indeed necessary even if the file already exists
 touch /usr/share/ssu/board-mappings.d/10-l500d-jolla.ini
 
 echo "Done!"
